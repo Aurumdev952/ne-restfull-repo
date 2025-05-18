@@ -6,6 +6,7 @@ import morgan from "morgan";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { port } from "./config";
+import "./cron";
 import { errorHandler } from "./middlewares/error";
 import apiRouter from "./routes/index";
 import { options } from "./swaggerOptions";

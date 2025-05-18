@@ -31,6 +31,7 @@
     "express-async-errors": "^3.1.1",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
+    "node-cron": "^4.0.5",
     "nodemailer": "^6.10.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
@@ -47,14 +48,15 @@
     "@types/jsonwebtoken": "^9.0.9",
     "@types/morgan": "^1.9.9",
     "@types/node": "^22.15.18",
+    "@types/node-cron": "^3.0.11",
+    "@types/nodemailer": "^6.4.17",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.8",
     "prettier": "^3.5.3",
     "prisma": "^6.8.2",
     "tsx": "^4.19.4",
     "typescript": "^5.8.3",
-    "zod-prisma-types": "^3.2.4",
-    "@types/nodemailer": "^6.4.17"
+    "zod-prisma-types": "^3.2.4"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
