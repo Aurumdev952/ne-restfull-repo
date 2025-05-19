@@ -20,7 +20,7 @@ export const signup = async (
     }
 
     const newUser = await createUser(validatedBody);
-    const token = generateToken({ userId: newUser.id, email: newUser.email });
+    const token = generateToken({ userId: newUser.id, email: newUser.email, role: newUser.role });
 
     res.status(201).json({ token });
   } catch (error) {
@@ -50,7 +50,11 @@ export const login = async (
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    const token = generateToken({ userId: user.id, email: user.email });
+    const token = generateToken({
+      userId: user.id,
+      email: user.email,
+      role: user.role,
+    });
 
     res.status(200).json({ token });
   } catch (error) {

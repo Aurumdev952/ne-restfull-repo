@@ -18,7 +18,7 @@ export default async function (
 
   try {
     const payload = jwt.verify(token!, jwtSecret) as User;
-    if (!payload?.id) {
+    if (!payload?.email) {
       return res.status(403).json({ error: "Unauthorized" });
     } else {
       const user = payload;
