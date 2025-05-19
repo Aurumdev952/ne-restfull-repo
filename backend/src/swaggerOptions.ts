@@ -9,6 +9,10 @@ export const options: Options = {
       version: "1.0.0",
       description: "API documentation for Backend API with user authentication",
     },
+    externalDocs: {                // <<< this will add the link to your swagger page
+      description: "swagger.json", // <<< link title
+      url: "/swagger.json"         // <<< and the file added below in app.get(...)
+    }, 
     servers: [
       {
         url: `http://localhost:${port}/api/v1`,

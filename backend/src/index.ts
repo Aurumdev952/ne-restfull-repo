@@ -24,7 +24,10 @@ app.use(json());
 
 const swaggerSpec = swaggerJSDoc(options);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
+app.get('/swagger.json', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerSpec);
+});
 app.get("/hello", (req: Request, res: Response) => {
   return res.json({ message: `hello ${req.params.name}` });
 });
