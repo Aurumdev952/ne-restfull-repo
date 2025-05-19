@@ -35,8 +35,8 @@ const SignupForm = () => {
   const onSubmit = async (data: SignupFormData) => {
     setIsLoading(true);
     try {
-      const { token, user } = await signupUser(data);
-      auth.signup(token, user);
+      const { token } = await signupUser(data);
+      auth.signup(token);
       toast.success("Signup successful! Redirecting...");
       navigate("/dashboard");
     } catch (error: any) {

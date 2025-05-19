@@ -1,4 +1,10 @@
-import React, { createContext, useEffect, useState, type ReactNode } from "react";
+import { jwtDecode } from "jwt-decode";
+import React, {
+  createContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
 import apiClient from "../lib/axios";
 import type { AuthContextType, AuthState, User } from "../types";
 
@@ -23,13 +29,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       // For simplicity, we'll just set a mock user if token exists
       // In a real app, decode JWT or fetch user data
       try {
-        // const decodedToken = jwtDecode(token); // Example with jwt-decode
-        // const user = { id: decodedToken.sub, email: decodedToken.email };
-        const storedUser = localStorage.getItem("authUser");
-        if (storedUser) {
+        const decodedToken = jwtDecode(token) as User;
+
+        if (decodedToken) {
           setAuthState({
             token,
-            user: JSON.parse(storedUser),
+            user: decodedToken,
             isLoading: false,
             isAuthenticated: true,
           });
@@ -63,19 +68,24 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     }
   }, []);
 
-  const handleAuthSuccess = (token: string, user: User) => {
+  const handleAuthSuccess = (token: string) => {
     localStorage.setItem("authToken", token);
-    localStorage.setItem("authUser", JSON.stringify(user));
     apiClient.defaults.headers.Authorization = `Bearer ${token}`;
-    setAuthState({ token, user, isLoading: false, isAuthenticated: true });
+    const dekodedToken = jwtDecode(token) as User;
+    setAuthState({
+      token,
+      user: dekodedToken,
+      isLoading: false,
+      isAuthenticated: true,
+    });
   };
 
-  const login = (token: string, user: User) => {
-    handleAuthSuccess(token, user);
+  const login = (token: string) => {
+    handleAuthSuccess(token);
   };
 
-  const signup = (token: string, user: User) => {
-    handleAuthSuccess(token, user);
+  const signup = (token: string) => {
+    handleAuthSuccess(token);
   };
 
   const logout = () => {

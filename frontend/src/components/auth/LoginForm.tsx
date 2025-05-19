@@ -34,11 +34,11 @@ const LoginForm = () => {
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
     try {
-      const { token, user } = await loginUser(data);
-      auth.login(token, user);
+      const { token } = await loginUser(data);
+      auth.login(token);
       toast.success("Login successful! Redirecting...");
       navigate("/dashboard");
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       const errorMessage =
         error.response?.data?.message ||

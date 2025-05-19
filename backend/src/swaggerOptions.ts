@@ -12,7 +12,7 @@ export const options: Options = {
     externalDocs: {                // <<< this will add the link to your swagger page
       description: "swagger.json", // <<< link title
       url: "/swagger.json"         // <<< and the file added below in app.get(...)
-    }, 
+    },
     servers: [
       {
         url: `http://localhost:${port}/api/v1`,
@@ -147,6 +147,17 @@ export const options: Options = {
             },
           },
           security: [],
+        },
+      },
+      "/auth/profile": {
+        get: {
+          summary: "get current user profile",
+          tags: ["Auth"],
+          responses: {
+            "401": {
+              description: "Invalid credentials",
+            },
+          },
         },
       },
       // "/users/profile": {

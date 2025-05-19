@@ -61,3 +61,27 @@ export const login = async (
     next(error);
   }
 };
+
+
+export const getCurrentUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const user = res.locals.user;
+    if (!user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    const userProfile = await findUserByEmail(user.email);
+    if (!userProfile) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    // Exclude password from the response
+    const { password, ...userWithoutPassword } = userProfile;
+    res.status(200).json(userWithoutPassword);
+    res.status(200).json(user);
+  } catch (error) {
+    next(error);
+  }
+};
