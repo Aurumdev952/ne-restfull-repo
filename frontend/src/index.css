@@ -42,7 +42,7 @@
   --color-light-blue: #A8D8EA;
   --color-light-green: #AEF3E7;
   --color-brand-primary: hsl(200, 80%, 50%);
-  --color-brand-secondary': hsl(160, 70%, 45%);
+  --color-brand-secondary: hsl(160, 70%, 45%);
 }
 
 :root {
