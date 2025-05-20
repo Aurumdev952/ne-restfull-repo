@@ -32,7 +32,7 @@ export type SignupFormData = z.infer<typeof signupSchema>;
 
 export const itemSchema = z.object({
   name: z.string().min(1, "Name is required"),
-  price: z.number().min(0, "Price must be a positive number"),
+  price: z.coerce.number().min(0, "Price must be a positive number"),
 });
 
 export const updateItemSchema = itemSchema.partial();

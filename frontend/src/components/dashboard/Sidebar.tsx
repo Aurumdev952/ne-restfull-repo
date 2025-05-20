@@ -71,7 +71,8 @@ const navLinks: NavLinkItem[] = [
     to: "/dashboard/items/create",
     icon: PlusSquare,
     label: "Create Item",
-    requiredRoles: ADMIN_ONLY,
+    requiredRoles: ALL_ROLES,
+    // requiredRoles: ADMIN_ONLY,
   },
   // Example of an admin-only link (if you had admin-specific pages)
   // { to: '/dashboard/admin/users', icon: Users, label: 'Manage Users', requiredRoles: ADMIN_ONLY },

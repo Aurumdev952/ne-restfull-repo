@@ -68,7 +68,7 @@ function App() {
 
                 {/* Create and Update items - Editors and Admins */}
                 <Route
-                  element={<RoleProtectedRoute allowedRoles={ADMINS_ONLY} />}
+                  element={<RoleProtectedRoute allowedRoles={ALL_AUTHENTICATED} />}
                 >
                   <Route path="items/create" element={<CreateItemPage />} />
                   <Route
