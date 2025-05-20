@@ -85,3 +85,4 @@ export const getCurrentUser = async (
     next(error);
   }
 };
+

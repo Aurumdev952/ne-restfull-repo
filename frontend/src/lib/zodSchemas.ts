@@ -31,25 +31,12 @@ export const signupSchema = z
 export type SignupFormData = z.infer<typeof signupSchema>;
 
 export const itemSchema = z.object({
-  name: z
-    .string()
-    .min(3, { message: "Name must be at least 3 characters long" }),
-  description: z
-    .string()
-    .min(10, { message: "Description must be at least 10 characters long" }),
-  category: z.string().min(1, { message: "Category is required" }),
-  price: z.coerce
-    .number()
-    .positive({ message: "Price must be a positive number" }),
-  stock: z.coerce
-    .number()
-    .int()
-    .nonnegative({ message: "Stock must be a non-negative integer" }),
-  imageUrl: z
-    .string()
-    .url({ message: "Invalid image URL" })
-    .optional()
-    .or(z.literal("")),
+  name: z.string().min(1, "Name is required"),
+  price: z.number().min(0, "Price must be a positive number"),
 });
 
+export const updateItemSchema = itemSchema.partial();
+
 export type ItemFormData = z.infer<typeof itemSchema>;
+export type CreateItemInput = z.infer<typeof itemSchema>;
+export type UpdateItemInput = z.infer<typeof updateItemSchema>;

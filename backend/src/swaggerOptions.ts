@@ -9,9 +9,10 @@ export const options: Options = {
       version: "1.0.0",
       description: "API documentation for Backend API with user authentication",
     },
-    externalDocs: {                // <<< this will add the link to your swagger page
+    externalDocs: {
+      // <<< this will add the link to your swagger page
       description: "swagger.json", // <<< link title
-      url: "/swagger.json"         // <<< and the file added below in app.get(...)
+      url: "/swagger.json", // <<< and the file added below in app.get(...)
     },
     servers: [
       {
@@ -58,6 +59,29 @@ export const options: Options = {
             password: {
               type: "string",
               description: "User's password",
+            },
+          },
+        },
+        CreateItemInput: {
+          type: "object",
+          required: ["name", "price"],
+          properties: {
+            name: {
+              type: "string",
+            },
+            price: {
+              type: "string",
+            },
+          },
+        },
+        UpdateItemInput: {
+          type: "object",
+          properties: {
+            name: {
+              type: "string",
+            },
+            price: {
+              type: "string",
             },
           },
         },
@@ -158,6 +182,132 @@ export const options: Options = {
               description: "Invalid credentials",
             },
           },
+        },
+      },
+      "/item": {
+        get: {
+          summary: "get items",
+          tags: ["Item"],
+          parameters: [
+            {
+              in: "query",
+              name: "page",
+              schema: {
+                type: "integer",
+                minimum: 1,
+                default: 1,
+              },
+              description: "Page number for pagination",
+              required: false,
+            },
+            {
+              in: "query",
+              name: "limit",
+              schema: {
+                type: "integer",
+                minimum: 1,
+                default: 10,
+              },
+              description: "Number of items per page",
+              required: false,
+            },
+          ],
+          responses: {
+            "401": {
+              description: "Invalid credentials",
+            },
+          },
+        },
+        put: {
+          summary: "create item",
+          requestBody: {
+            required: true,
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/CreateItemInput",
+                },
+              },
+            },
+          },
+          tags: ["Item"],
+          responses: {
+            "401": {
+              description: "Invalid credentials",
+            },
+          },
+        },
+      },
+      "/item/{id}": {
+        get: {
+          summary: "get item",
+          tags: ["Item"],
+          parameters: [
+            {
+              in: "path", // Specify that this is a path parameter
+              name: "id", // The name must match the parameter in the path ({id})
+              schema: {
+                type: "uuid", // Or "string", "uuid", etc., depending on your ID type
+              },
+              required: true, // Path parameters are typically required
+              description: "ID of the item to retrieve",
+            },
+          ],
+          responses: {
+            "401": {
+              description: "Invalid credentials",
+            },
+          },
+        },
+        put: {
+          summary: "update item",
+          parameters: [
+            {
+              in: "path", // Specify that this is a path parameter
+              name: "id", // The name must match the parameter in the path ({id})
+              schema: {
+                type: "uuid", // Or "string", "uuid", etc., depending on your ID type
+              },
+              required: true, // Path parameters are typically required
+              description: "ID of the item to retrieve",
+            },
+          ],
+          requestBody: {
+            required: true,
+            content: {
+              "application/json": {
+                schema: {
+                  $ref: "#/components/schemas/UpdateItemInput",
+                },
+              },
+            },
+          },
+          tags: ["Item"],
+          responses: {
+            "401": {
+              description: "Invalid credentials",
+            },
+          },
+        },
+        delete: {
+          summary: "delete item",
+          tags: ["Item"],
+          responses: {
+            "401": {
+              description: "Invalid credentials",
+            },
+          },
+          parameters: [
+            {
+              in: "path", // Specify that this is a path parameter
+              name: "id", // The name must match the parameter in the path ({id})
+              schema: {
+                type: "uuid", // Or "string", "uuid", etc., depending on your ID type
+              },
+              required: true, // Path parameters are typically required
+              description: "ID of the item to retrieve",
+            },
+          ],
         },
       },
       // "/users/profile": {

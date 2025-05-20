@@ -8,12 +8,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -28,9 +26,7 @@ import {
   CalendarDays,
   DollarSign,
   Edit,
-  Layers,
   Loader2,
-  Package,
   Trash2,
 } from "lucide-react";
 import { useState } from "react";
@@ -87,54 +83,22 @@ const ViewSingleItemPage = () => {
       </Button>
 
       <Card className="overflow-hidden shadow-xl">
-        {item.imageUrl && (
-          <div className="h-64 w-full overflow-hidden bg-slate-200">
-            <img
-              src={item.imageUrl}
-              alt={item.name}
-              className="object-contain w-full h-full"
-            />
-          </div>
-        )}
         <CardHeader className="bg-slate-50 border-b">
           <CardTitle className="text-3xl font-bold text-slate-800">
             {item.name}
           </CardTitle>
-          <CardDescription className="text-md text-slate-600">
+          {/* <CardDescription className="text-md text-slate-600">
             {item.description}
-          </CardDescription>
+          </CardDescription> */}
         </CardHeader>
         <CardContent className="p-6 grid md:grid-cols-2 gap-6">
           <div className="space-y-4">
-            <div className="flex items-center">
-              <Layers className="h-5 w-5 mr-3 text-brand-secondary" />
-              <div>
-                <p className="text-sm text-slate-500">Category</p>
-                <Badge
-                  variant="secondary"
-                  className="bg-emerald-100 text-emerald-800"
-                >
-                  {item.category}
-                </Badge>
-              </div>
-            </div>
-            <Separator />
             <div className="flex items-center">
               <DollarSign className="h-5 w-5 mr-3 text-brand-primary" />
               <div>
                 <p className="text-sm text-slate-500">Price</p>
                 <p className="text-lg font-semibold text-slate-700">
                   ${item.price.toFixed(2)}
-                </p>
-              </div>
-            </div>
-            <Separator />
-            <div className="flex items-center">
-              <Package className="h-5 w-5 mr-3 text-slate-500" />
-              <div>
-                <p className="text-sm text-slate-500">Stock</p>
-                <p className="text-lg font-semibold text-slate-700">
-                  {item.stock} units
                 </p>
               </div>
             </div>

@@ -12,7 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import {
   deleteItem as deleteItemService,
-  getItems,
+  getAllItems
 } from "@/services/itemService";
 import type { Item } from "@/types/item";
 import { Loader2, PlusCircle } from "lucide-react";
@@ -28,8 +28,8 @@ const ViewAllItemsPage = () => {
   const [itemToDelete, setItemToDelete] = useState<string | null>(null);
 
   const fetcher = ([key, currentPage]: [string, number]) =>
-    getItems(currentPage, ITEMS_PER_PAGE);
-  const { data, error, isLoading } = useSWR(["/items/cards", page], fetcher, {
+    getAllItems(currentPage, ITEMS_PER_PAGE);
+  const { data, error, isLoading } = useSWR(["/item", page], fetcher, {
     keepPreviousData: true,
   });
 
@@ -37,10 +37,10 @@ const ViewAllItemsPage = () => {
     try {
       await deleteItemService(id);
       toast.success("Item deleted successfully");
-      mutate(["/items/cards", page]); // Revalidate current page
+      mutate(["/item", page]);
       // Also revalidate table view if it's using a similar key structure
       mutate(
-        (key) => typeof key === "string" && key.startsWith("/items/table"),
+        (key) => typeof key === "string" && key.startsWith("/item"),
         undefined,
         { revalidate: true }
       );
@@ -58,9 +58,9 @@ const ViewAllItemsPage = () => {
       </div>
     );
 
-  const items = data?.items || [];
-  const totalItems = data?.total || 0;
-  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+  const items = data?.data || [];
+  const totalItems = data?.pagination.totalItems|| 0;
+  const totalPages = data?.pagination.totalPages|| 0;
 
   return (
     <div className="space-y-6">

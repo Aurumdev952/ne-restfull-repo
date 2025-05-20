@@ -28,11 +28,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useDebounce } from "@/hooks/useDebounce";
-import {
-  deleteItem as deleteItemService,
-  getItemCategories,
-  getItems,
-} from "@/services/itemService";
+import { deleteItem as deleteItemService, getAllItems } from "@/services/itemService";
 import { FilterX, Loader2, PlusCircle, Search } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -49,21 +45,21 @@ const ViewItemsTablePage = () => {
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
-  const { data: categoriesData, isLoading: categoriesLoading } = useSWR(
-    "/items/categories",
-    getItemCategories
-  );
+  // const { data: categoriesData, isLoading: categoriesLoading } = useSWR(
+  //   "/items/categories",
+  //   getItemCategories
+  // );
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const fetcher = ([_, page, search, category]: [
+  const fetcher = ([_, page]: [
     string,
     number,
     string,
-    string
-  ]) => getItems(page, ITEMS_PER_PAGE, { name: search, category });
+    string,
+  ]) => getAllItems(page, ITEMS_PER_PAGE);
 
   const { data, error, isLoading, isValidating } = useSWR(
-    ["/items/table", currentPage, debouncedSearchTerm, categoryFilter],
+    ["/item", currentPage],
     fetcher,
     { keepPreviousData: true }
   );
@@ -73,14 +69,14 @@ const ViewItemsTablePage = () => {
       await deleteItemService(id);
       toast.success("Item deleted successfully");
       mutate([
-        "/items/table",
+        "/item",
         currentPage,
         debouncedSearchTerm,
         categoryFilter,
       ]);
 
       mutate(
-        (key) => typeof key === "string" && key.startsWith("/items/cards"),
+        (key) => typeof key === "string" && key.startsWith("/item"),
         undefined,
         { revalidate: true }
       );
@@ -90,8 +86,8 @@ const ViewItemsTablePage = () => {
     }
   };
 
-  const items = data?.items || [];
-  const totalItems = data?.total || 0;
+  const items = data?.data || [];
+  const totalItems = data?.pagination.totalPages || 0;
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
 
   const handlePageChange = (page: number) => {
@@ -241,7 +237,7 @@ const ViewItemsTablePage = () => {
         </Button>
       </div>
 
-      <div className="p-4 bg-white rounded-lg shadow-sm space-y-4 md:space-y-0 md:flex md:items-center md:gap-4">
+      {/* <div className="p-4 bg-white rounded-lg shadow-sm space-y-4 md:space-y-0 md:flex md:items-center md:gap-4">
         <div className="relative flex-grow">
           <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
           <Input
@@ -252,26 +248,6 @@ const ViewItemsTablePage = () => {
             className="pl-8 w-full"
           />
         </div>
-        <Select
-          value={categoryFilter}
-          onValueChange={(value) => {
-            setCategoryFilter(value === "all" ? "" : value);
-            setCurrentPage(1);
-          }}
-          disabled={categoriesLoading}
-        >
-          <SelectTrigger className="w-full md:w-[180px]">
-            <SelectValue placeholder="Filter by category" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Categories</SelectItem>
-            {categoriesData?.map((cat: string) => (
-              <SelectItem key={cat} value={cat}>
-                {cat}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
         {(searchTerm || categoryFilter) && (
           <Button
             variant="outline"
@@ -281,7 +257,7 @@ const ViewItemsTablePage = () => {
             <FilterX className="mr-2 h-4 w-4" /> Clear Filters
           </Button>
         )}
-      </div>
+      </div> */}
 
       {(isLoading && !data) || (isValidating && items.length === 0) ? (
         <div className="flex justify-center items-center h-64">

@@ -188,3 +188,26 @@ async function callDatabaseObjects() {
   * Call database functions/procedures from your application code using `prisma.$queryRaw` or `prisma.$executeRaw`.
   * Be mindful of SQL syntax and database specifics (like PL/pgSQL for PostgreSQL).
   * Managing complex database logic via raw SQL in migrations requires careful versioning and testing.
+
+
+```sql
+DROP PROCEDURE check_if_underage();
+DROP TRIGGER on_user_insert ON users;
+CREATE OR REPLACE FUNCTION check_if_underage()
+RETURNS trigger
+LANGUAGE plpgsql
+AS $$
+BEGIN
+	IF NEW.age < 18 THEN
+	    INSERT INTO underage (name)
+	    VALUES (NEW.name);
+	END IF;
+    RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER on_user_insert
+AFTER INSERT ON users
+FOR EACH ROW
+EXECUTE FUNCTION check_if_underage();
+```
